@@ -1,9 +1,9 @@
+package Lab1;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Random;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by maxim on 2016-01-19.
