@@ -1,5 +1,3 @@
-package Lab1;
-
 /**
  * Created by maxim on 2016-01-19.
  */
