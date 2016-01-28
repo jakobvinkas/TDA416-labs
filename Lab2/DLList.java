@@ -1,5 +1,8 @@
+package Lab2;
+
 /** Doubly-linked list with user access to nodes
  */
+
 public class DLList<E> {
   public class Node {
     /** The contents of the node is public */
