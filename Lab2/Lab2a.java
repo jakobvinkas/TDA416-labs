@@ -2,7 +2,7 @@ package Lab2;
 
 public class Lab2a {
     public static double[] simplifyShape(double[] poly, int k) {
-        while (poly.length > k) {
+        while (poly.length > k * 2) {
             double minImportance = -1;
             int minImportanceIndex = -1;
 
@@ -23,7 +23,7 @@ public class Lab2a {
                 if (i != minImportanceIndex) {
                     tmp[tmpIndex] = poly[i];
                     tmp[tmpIndex + 1] = poly[i + 1];
-                    tmpIndex++;
+                    tmpIndex += 2;
                 }
             }
             poly = tmp;
