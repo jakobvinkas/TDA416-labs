@@ -1,5 +1,3 @@
-package Lab2;
-
 import java.awt.Color;
 import java.util.Scanner;
 import java.util.List;

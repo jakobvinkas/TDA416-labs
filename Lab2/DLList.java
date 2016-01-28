@@ -1,5 +1,3 @@
-package Lab2;
-
 /** Doubly-linked list with user access to nodes
  */
 public class DLList<E> {

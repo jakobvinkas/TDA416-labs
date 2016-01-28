@@ -1,5 +1,3 @@
-package Lab2;
-
 public class Lab2a {
     public static double[] simplifyShape(double[] poly, int k) {
         while (poly.length > k * 2) {

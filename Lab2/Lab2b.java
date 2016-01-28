@@ -1,5 +1,3 @@
-package Lab2;
-
 import java.util.PriorityQueue;
 
 public class Lab2b {
