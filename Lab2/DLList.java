@@ -119,7 +119,20 @@ public class DLList<E extends Comparable<E>> {
      * @param l   then node containing the element that will be removed, must be non-null and a node belonging to this list
      */
     public void remove(Node l) {
-        l.next.prev = l.prev;
-        l.prev.next = l.next;
+        if (l.next != null) {
+            l.next.prev = l.prev;
+        }
+
+        if (l.prev != null) {
+            l.prev.next = l.next;
+        }
+
+        if (l == first) {
+            first = l.next;
+        }
+
+        if (l == last) {
+            last = l.prev;
+        }
     }
 }
