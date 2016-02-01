@@ -30,6 +30,17 @@ public class Lab2a {
         return poly;
     }
 
+    /**
+     * Calculates the importance of a single point.
+     *
+     * @param x1 The x coordinate of the previous point.
+     * @param y1 The y coordinate of the previous point.
+     * @param x2 The x coordinate of the point to calculate the importance for.
+     * @param y2 The y coordinate of the point to calculate the importance for.
+     * @param x3 The x coordinate of the next point.
+     * @param y3 The y coordinate of the next point.
+     * @return The importance of the point.
+     */
     private static double calcImportance(double x1, double y1, double x2, double y2, double x3, double y3){
         double l1 = calcDist(x1, y1, x2, y2);
         double l2 = calcDist(x2, y2, x3, y3);
