@@ -4,7 +4,7 @@ public class Lab2a {
             double minImportance = -1;
             int minImportanceIndex = -1;
 
-            // find least important point
+            // Find least important point
             for (int i = 2; i < poly.length - 2; i += 2) {
                 double importance = calcImportance(poly[i - 2], poly[i - 1],
                         poly[i], poly[i + 1], poly[i + 2], poly[i + 3]);
@@ -16,7 +16,7 @@ public class Lab2a {
 
             // Remove least important point from array. We do this by creating
             // a new array and copying all elements except the least important
-            // one.
+            // one
             double[] tmp = new double[poly.length - 2];
             int tmpIndex = 0;
             for (int i = 0; i < poly.length; i += 2) {
