@@ -4,7 +4,7 @@ public class DLList<E extends Comparable<E>> {
     public static class Node<E extends Comparable<E>> implements Comparable<Node<E>> {
         private E value;
 
-        protected Node prev, next;
+        protected Node<E> prev, next;
 
         Node() {
             this(null);
@@ -25,7 +25,7 @@ public class DLList<E extends Comparable<E>> {
     }
 
     /** first and last nodes in list, null when list is empty */
-    Node first, last;
+    Node<E> first, last;
 
     DLList() {
         first = last = null;
@@ -35,8 +35,8 @@ public class DLList<E extends Comparable<E>> {
      * @param e   the new element value
      * @return    the node holding the added element
      */
-    public Node addFirst(E e) {
-        Node p = new Node(e);
+    public Node<E> addFirst(E e) {
+        Node<E> p = new Node<>(e);
 
         if (first == null) {
             last = p;
@@ -54,8 +54,8 @@ public class DLList<E extends Comparable<E>> {
      * @param e   the new element
      * @return    the node holding the added element
      */
-    public Node addLast(E e) {
-        Node p = new Node(e);
+    public Node<E> addLast(E e) {
+        Node<E> p = new Node<>(e);
 
         if (last == null) {
             last = p;
@@ -72,14 +72,14 @@ public class DLList<E extends Comparable<E>> {
     /**
      * @return    the node of the list's first element, null if list is empty
      */
-    public Node getFirst() {
+    public Node<E> getFirst() {
         return first;
     }
 
     /**
      * @return    the node of the list's last element, null if list is empty
      */
-    public Node getLast() {
+    public Node<E> getLast() {
         return last;
     }
 
@@ -88,11 +88,11 @@ public class DLList<E extends Comparable<E>> {
      * @param l   the node after which to insert the element, must be non-null and a node belonging to this list
      * @return    the node holding the inserted element
      */
-    public Node insertAfter(E e, Node l) {
+    public Node<E> insertAfter(E e, Node<E> l) {
         if (l == last) {
             return addLast(e);
         } else {
-            Node p = new Node(e);
+            Node<E> p = new Node<>(e);
             l.next.prev = p;
             p.next = l.next;
             p.prev = l;
@@ -107,7 +107,7 @@ public class DLList<E extends Comparable<E>> {
      * @param l   the node before which to insert the element, must be non-null and a node belonging to this list
      * @return    the node holding the inserted element
      */
-    public Node insertBefore(E e, Node l) {
+    public Node<E> insertBefore(E e, Node<E> l) {
         if (l == first) { 
             return addFirst(e);
         } else {
@@ -118,7 +118,7 @@ public class DLList<E extends Comparable<E>> {
     /** removes an element
      * @param l   then node containing the element that will be removed, must be non-null and a node belonging to this list
      */
-    public void remove(Node l) {
+    public void remove(Node<E> l) {
         if (l.next != null) {
             l.next.prev = l.prev;
         }
