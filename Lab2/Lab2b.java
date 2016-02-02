@@ -1,8 +1,9 @@
 import java.util.PriorityQueue;
+import java.util.ArrayList;
 
 public class Lab2b {
     public static double[] simplifyShape(double[] poly, int k) {
-        PriorityQueue<Node<Point>> queue = new PriorityQueue<>();
+        PriorityQueue<DLList.Node<Point>> queue = new PriorityQueue<>();
         DLList<Point> points = new DLList<>();
         Point previous = new Point(poly[0], poly[1]);
         Point current = new Point(poly[2], poly[3]);
@@ -17,31 +18,42 @@ public class Lab2b {
             current = next;
         }
 
-        while (queue.size() > k) {
+        while (queue.size() + 2 > k) {
             DLList.Node<Point> removed = queue.remove();
             DLList.Node<Point> prev  = removed.prev;
             DLList.Node<Point> next = removed.next;
+
+            System.out.println("prev " + prev);
+            System.out.println("next " + next);
+
             points.remove(removed);
-            prev.getValue().setImportance(prev.prev.getValue(), next.getValue());
-            next.getValue().setImportance(prev.getValue(), next.next.getValue());
+            if (prev.prev != null) {
+                prev.getValue().setImportance(prev.prev.getValue(), next.getValue());
+            }
+            if (next.next != null) {
+                next.getValue().setImportance(prev.getValue(), next.next.getValue());
+            }
             queue.remove(prev);
             queue.remove(next);
             queue.add(prev);
             queue.add(next);
         }
-        ArrayList<Double> newPoly = new ArrayList<>();
 
+        double[] newPoly = new double[k * 2];
+        int i = 0;
         while(points.getFirst() != null) {
             DLList.Node<Point> p = points.getFirst();
-            newPoly.add(p.getValue().getX());
-            newPoly.add(p.getValue().getY());
+            Point point = p.getValue();
+
+            newPoly[i] = point.getX();
+            i++;
+            newPoly[i] = point.getY();
+            i++;
+
             points.remove(p);
-        } 
-        return newPoly.toArray();     
-    }
+        }
 
-    private static void updateNodes(DLList.Node<Point> node) {
-
+        return newPoly;
     }
 }
 
