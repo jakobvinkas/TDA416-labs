@@ -22,6 +22,10 @@ public class DLList<E extends Comparable<E>> {
         public E getValue(){
             return this.value;
         }
+
+        public String toString() {
+            return value.toString();
+        }
     }
 
     /** first and last nodes in list, null when list is empty */
@@ -134,5 +138,20 @@ public class DLList<E extends Comparable<E>> {
         if (l == last) {
             last = l.prev;
         }
+    }
+
+    @Override
+    public String toString() {
+        DLList.Node<E> node = first;
+
+        StringBuilder builder = new StringBuilder("[ ");
+
+        while (node != null) {
+            builder.append(node + " ");
+            node = node.next;
+        }
+
+        builder.append("]");
+        return builder.toString();
     }
 }

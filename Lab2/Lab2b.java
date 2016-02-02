@@ -5,15 +5,25 @@ public class Lab2b {
     public static double[] simplifyShape(double[] poly, int k) {
         PriorityQueue<DLList.Node<Point>> queue = new PriorityQueue<>();
         DLList<Point> points = new DLList<>();
+
         Point previous = new Point(poly[0], poly[1]);
+        DLList.Node<Point> currentNode = points.addFirst(previous);
+
         Point current = new Point(poly[2], poly[3]);
-        DLList.Node<Point> currNode = points.addFirst(previous);
-        currNode = points.insertAfter(current, currNode);
-        for (int i = 4; i<poly.length; i+=2 ) {
-            Point next = new Point(poly[i], poly[i+1]);
+        currentNode = points.insertAfter(current, currentNode);
+
+        for (int i = 4; i < poly.length; i += 2) {
+            // initate the next point in the list with 0 importance
+            Point next = new Point(poly[i], poly[i + 1]);
+
+            // calculate the importance of the current point using the previous and the next
             current.setImportance(previous, next);
-            queue.add(currNode);
-            currNode = points.insertAfter(next, currNode);
+
+            // add the current point to the priority queue and the linked list
+            queue.add(currentNode);
+            currentNode = points.insertAfter(next, currentNode);
+
+            // update references for the next iteration
             previous = current;
             current = next;
         }
@@ -23,20 +33,21 @@ public class Lab2b {
             DLList.Node<Point> prev  = removed.prev;
             DLList.Node<Point> next = removed.next;
 
-            System.out.println("prev " + prev);
-            System.out.println("next " + next);
-
             points.remove(removed);
+
+            // if prev is the first point, do nothing
             if (prev.prev != null) {
                 prev.getValue().setImportance(prev.prev.getValue(), next.getValue());
+                queue.remove(prev);
+                queue.add(prev);
             }
+
+            // if next is the last point, do nothing
             if (next.next != null) {
                 next.getValue().setImportance(prev.getValue(), next.next.getValue());
+                queue.remove(next);
+                queue.add(next);
             }
-            queue.remove(prev);
-            queue.remove(next);
-            queue.add(prev);
-            queue.add(next);
         }
 
         double[] newPoly = new double[k * 2];
@@ -100,5 +111,10 @@ class Point implements Comparable<Point> {
     @Override
     public int compareTo(Point p) {
         return Double.compare(this.importance, p.getImportance());
+    }
+
+    @Override
+    public String toString() {
+        return "(" + this.x + ", " + this.y + ", " + this.importance + ")";
     }
 }
