@@ -6,24 +6,24 @@ public class Lab2b {
         PriorityQueue<DLList.Node<Point>> queue = new PriorityQueue<>();
         DLList<Point> points = new DLList<>();
 
+        // Start by initiating the first two points in the list. 
         Point previous = new Point(poly[0], poly[1]);
         DLList.Node<Point> currentNode = points.addFirst(previous);
 
         Point current = new Point(poly[2], poly[3]);
         currentNode = points.insertAfter(current, currentNode);
 
+        // Iterate through the remaining points. In each iteration we initiate
+        // the "next" point and calculate the importance for the current one
+        // using the previous and next points.
         for (int i = 4; i < poly.length; i += 2) {
-            // initate the next point in the list with 0 importance
             Point next = new Point(poly[i], poly[i + 1]);
 
-            // calculate the importance of the current point using the previous and the next
             current.setImportance(previous, next);
 
-            // add the current point to the priority queue and the linked list
             queue.add(currentNode);
             currentNode = points.insertAfter(next, currentNode);
 
-            // update references for the next iteration
             previous = current;
             current = next;
         }
@@ -35,14 +35,14 @@ public class Lab2b {
 
             points.remove(removed);
 
-            // if prev is the first point, do nothing
+            // Update the value of prev if it isn't the first point in the list
             if (prev.prev != null) {
                 prev.getValue().setImportance(prev.prev.getValue(), next.getValue());
                 queue.remove(prev);
                 queue.add(prev);
             }
 
-            // if next is the last point, do nothing
+            // Update the value of next if it isn't the last point in the list
             if (next.next != null) {
                 next.getValue().setImportance(prev.getValue(), next.next.getValue());
                 queue.remove(next);
@@ -50,6 +50,7 @@ public class Lab2b {
             }
         }
 
+        // Transform the remaining points to an array of coordinates
         double[] newPoly = new double[k * 2];
         int i = 0;
         while (points.getFirst() != null) {
