@@ -14,7 +14,9 @@ public class Lab2a {
                 }
             }
 
-            // remove least important point from array
+            // Remove least important point from array. We do this by creating
+            // a new array and copying all elements except the least important
+            // one.
             double[] tmp = new double[poly.length - 2];
             int tmpIndex = 0;
             for (int i = 0; i < poly.length; i += 2) {
