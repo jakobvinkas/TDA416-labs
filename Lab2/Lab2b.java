@@ -52,7 +52,7 @@ public class Lab2b {
 
         double[] newPoly = new double[k * 2];
         int i = 0;
-        while(points.getFirst() != null) {
+        while (points.getFirst() != null) {
             DLList.Node<Point> p = points.getFirst();
             Point point = p.getValue();
 
