@@ -1,10 +1,10 @@
 /** Doubly-linked list with user access to nodes
  */
-public class DLList<E extends Comparable<E>> {
-    public static class Node<E extends Comparable<E>> implements Comparable<Node<E>> {
+public class DLList<E> {
+    public class Node {
         private E value;
 
-        protected Node<E> prev, next;
+        protected Node prev, next;
 
         Node() {
             this(null);
@@ -13,10 +13,6 @@ public class DLList<E extends Comparable<E>> {
         Node(E value) {
             this.value = value;
             prev = next = null;
-        }
-
-        public int compareTo(Node<E> o) {
-            return getValue().compareTo(o.getValue());
         }
 
         public E getValue(){
@@ -29,7 +25,7 @@ public class DLList<E extends Comparable<E>> {
     }
 
     /** first and last nodes in list, null when list is empty */
-    Node<E> first, last;
+    Node first, last;
 
     DLList() {
         first = last = null;
@@ -39,8 +35,8 @@ public class DLList<E extends Comparable<E>> {
      * @param e   the new element value
      * @return    the node holding the added element
      */
-    public Node<E> addFirst(E e) {
-        Node<E> p = new Node<>(e);
+    public Node addFirst(E e) {
+        Node p = new Node(e);
 
         if (first == null) {
             last = p;
@@ -58,8 +54,8 @@ public class DLList<E extends Comparable<E>> {
      * @param e   the new element
      * @return    the node holding the added element
      */
-    public Node<E> addLast(E e) {
-        Node<E> p = new Node<>(e);
+    public Node addLast(E e) {
+        Node p = new Node(e);
 
         if (last == null) {
             last = p;
@@ -76,14 +72,14 @@ public class DLList<E extends Comparable<E>> {
     /**
      * @return    the node of the list's first element, null if list is empty
      */
-    public Node<E> getFirst() {
+    public Node getFirst() {
         return first;
     }
 
     /**
      * @return    the node of the list's last element, null if list is empty
      */
-    public Node<E> getLast() {
+    public Node getLast() {
         return last;
     }
 
@@ -92,11 +88,11 @@ public class DLList<E extends Comparable<E>> {
      * @param l   the node after which to insert the element, must be non-null and a node belonging to this list
      * @return    the node holding the inserted element
      */
-    public Node<E> insertAfter(E e, Node<E> l) {
+    public Node insertAfter(E e, Node l) {
         if (l == last) {
             return addLast(e);
         } else {
-            Node<E> p = new Node<>(e);
+            Node p = new Node(e);
             l.next.prev = p;
             p.next = l.next;
             p.prev = l;
@@ -111,7 +107,7 @@ public class DLList<E extends Comparable<E>> {
      * @param l   the node before which to insert the element, must be non-null and a node belonging to this list
      * @return    the node holding the inserted element
      */
-    public Node<E> insertBefore(E e, Node<E> l) {
+    public Node insertBefore(E e, Node l) {
         if (l == first) { 
             return addFirst(e);
         } else {
@@ -122,7 +118,7 @@ public class DLList<E extends Comparable<E>> {
     /** removes an element
      * @param l   then node containing the element that will be removed, must be non-null and a node belonging to this list
      */
-    public void remove(Node<E> l) {
+    public void remove(Node l) {
         if (l.next != null) {
             l.next.prev = l.prev;
         }
@@ -138,20 +134,5 @@ public class DLList<E extends Comparable<E>> {
         if (l == last) {
             last = l.prev;
         }
-    }
-
-    @Override
-    public String toString() {
-        DLList.Node<E> node = first;
-
-        StringBuilder builder = new StringBuilder("[ ");
-
-        while (node != null) {
-            builder.append(node + " ");
-            node = node.next;
-        }
-
-        builder.append("]");
-        return builder.toString();
     }
 }
