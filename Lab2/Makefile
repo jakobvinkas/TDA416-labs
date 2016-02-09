@@ -1,3 +1,6 @@
+K = 8
+FIG = fig2
+
 all: build
 
 clean:
@@ -6,8 +9,5 @@ clean:
 build:
 	javac -d bin Lab2.java
 
-fig1: build
-	java -cp bin Lab2 -k8 -w12 -h12 < fig1.txt
-
-fig2: build
-	java -cp bin Lab2 -k8 -w12 -h12 < fig2.txt
+run: build
+	java -cp bin Lab2 -k$(K) -w12 -h12 < $(FIG).txt
