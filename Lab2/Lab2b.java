@@ -60,7 +60,14 @@ public class Lab2b {
     }
 }
 
+/**
+ * Compares two nodes in a DLList of points. This comparator calculates the
+ * importance by looking at the previous and next nodes in the list, so it is
+ * required that there is a previous and next node in the list prior to adding
+ * a node to the priority queue.
+ */
 class PointComparator implements Comparator<DLList<Point>.Node> {
+    @Override
     public int compare(DLList<Point>.Node p1, DLList<Point>.Node p2) {
         return Double.compare(
             p1.getValue().calcImportance(p1.prev.getValue(), p1.next.getValue()),
@@ -86,6 +93,13 @@ class Point {
         return this.y;
     }
 
+    /**
+     * Calculates the importance of this point in relation to two other points.
+     * @param l The first point to compare to.
+     * @param r The second point to compare to.
+     * @return the total distance between this point and l and r minus the
+     *         distance between l and r.
+     */
     public double calcImportance(Point l, Point r) {
         if (l == null || r == null) {
             throw new IllegalArgumentException("setImportance: null values not permitted");
@@ -97,6 +111,13 @@ class Point {
         return l1 + l2 - l3;
     }
 
+    /**
+     * Calculates the distance between two points.
+     *
+     * @param p1
+     * @param p2
+     * @return the distance between p1 and p2.
+     */
     private static double calcDist(Point p1, Point p2) {
         double distX = Math.abs(p1.getX() - p2.getX());
         double distY = Math.abs(p1.getY() - p2.getY());
