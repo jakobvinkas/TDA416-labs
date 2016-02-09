@@ -1,50 +1,41 @@
 import java.util.PriorityQueue;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Lab2b {
     public static double[] simplifyShape(double[] poly, int k) {
-        PriorityQueue<DLList.Node<Point>> queue = new PriorityQueue<>();
+        PriorityQueue<DLList<Point>.Node> queue = new PriorityQueue<>(poly.length - 2, new PointComparator());
         DLList<Point> points = new DLList<>();
 
-        // Start by initiating the first two points in the list. 
-        Point previous = new Point(poly[0], poly[1]);
-        DLList.Node<Point> currentNode = points.addFirst(previous);
-
-        Point current = new Point(poly[2], poly[3]);
-        currentNode = points.insertAfter(current, currentNode);
+        // Start by initiating the first two points in the list.
+        DLList<Point>.Node currentNode = points.addFirst(new Point(poly[0], poly[1]));
+        currentNode = points.insertAfter(new Point(poly[2], poly[3]), currentNode);
 
         // Iterate through the remaining points. In each iteration we initiate
         // the "next" point and calculate the importance for the current one
         // using the previous and next points.
         for (int i = 4; i < poly.length; i += 2) {
-            Point next = new Point(poly[i], poly[i + 1]);
-
-            current.setImportance(previous, next);
-
+            Point point = new Point(poly[i], poly[i + 1]);
+            DLList<Point>.Node nextNode = points.insertAfter(point, currentNode);
             queue.add(currentNode);
-            currentNode = points.insertAfter(next, currentNode);
-
-            previous = current;
-            current = next;
+            currentNode = nextNode;
         }
 
         while (queue.size() + 2 > k) {
-            DLList.Node<Point> removed = queue.remove();
-            DLList.Node<Point> prev  = removed.prev;
-            DLList.Node<Point> next = removed.next;
+            DLList<Point>.Node removed = queue.remove();
+            DLList<Point>.Node prev  = removed.prev;
+            DLList<Point>.Node next = removed.next;
 
             points.remove(removed);
 
             // Update the value of prev if it isn't the first point in the list
             if (prev.prev != null) {
-                prev.getValue().setImportance(prev.prev.getValue(), next.getValue());
                 queue.remove(prev);
                 queue.add(prev);
             }
 
             // Update the value of next if it isn't the last point in the list
             if (next.next != null) {
-                next.getValue().setImportance(prev.getValue(), next.next.getValue());
                 queue.remove(next);
                 queue.add(next);
             }
@@ -54,7 +45,7 @@ public class Lab2b {
         double[] newPoly = new double[k * 2];
         int i = 0;
         while (points.getFirst() != null) {
-            DLList.Node<Point> p = points.getFirst();
+            DLList<Point>.Node p = points.getFirst();
             Point point = p.getValue();
 
             newPoly[i] = point.getX();
@@ -69,15 +60,22 @@ public class Lab2b {
     }
 }
 
-class Point implements Comparable<Point> {
+class PointComparator implements Comparator<DLList<Point>.Node> {
+    public int compare(DLList<Point>.Node p1, DLList<Point>.Node p2) {
+        return Double.compare(
+            p1.getValue().calcImportance(p1.prev.getValue(), p1.next.getValue()),
+            p2.getValue().calcImportance(p2.prev.getValue(), p2.next.getValue())
+        );
+    }
+}
+
+class Point {
     private double x;
     private double y;
-    private double importance;
 
     public Point(double x, double y) {
         this.x = x;
         this.y = y;
-        this.importance = 0;
     }
 
     public double getX() {
@@ -88,11 +86,7 @@ class Point implements Comparable<Point> {
         return this.y;
     }
 
-    public double getImportance() {
-        return this.importance;
-    }
-
-    public void setImportance(Point l, Point r) {
+    public double calcImportance(Point l, Point r) {
         if (l == null || r == null) {
             throw new IllegalArgumentException("setImportance: null values not permitted");
         }
@@ -100,7 +94,7 @@ class Point implements Comparable<Point> {
         double l1 = calcDist(l, this);
         double l2 = calcDist(this, r);
         double l3 = calcDist(l, r);
-        this.importance = l1 + l2 - l3;
+        return l1 + l2 - l3;
     }
 
     private static double calcDist(Point p1, Point p2) {
@@ -110,12 +104,7 @@ class Point implements Comparable<Point> {
     }
 
     @Override
-    public int compareTo(Point p) {
-        return Double.compare(this.importance, p.getImportance());
-    }
-
-    @Override
     public String toString() {
-        return "(" + this.x + ", " + this.y + ", " + this.importance + ")";
+        return "(" + this.x + ", " + this.y + ")";
     }
 }

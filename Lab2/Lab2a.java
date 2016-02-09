@@ -8,7 +8,7 @@ public class Lab2a {
             for (int i = 2; i < poly.length - 2; i += 2) {
                 double importance = calcImportance(poly[i - 2], poly[i - 1],
                         poly[i], poly[i + 1], poly[i + 2], poly[i + 3]);
-                if (minImportance == -1 || importance < minImportance) {
+                if (minImportance == -1 || importance <= minImportance) {
                     minImportance = importance;
                     minImportanceIndex = i;
                 }
