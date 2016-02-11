@@ -111,6 +111,23 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 	}
 
 	public boolean remove(E x) {
+		Node prev = null;
+		Node node = head;
+
+		while (node != null) {
+			if (node.getValue().equals(x)) {
+				if (node == head) {
+					head = node.next;
+				} else {
+					prev.next = node.next;
+				}
+				size--;
+				return true;
+			}
+			prev = node;
+			node = node.next;
+		}
+
 		return false;
 	}
 
