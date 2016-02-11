@@ -115,7 +115,15 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 	public boolean remove(E x) {
 		return false;
 	}
+
 	public boolean contains(E x) {
+		Node node = head;
+		while (node != null) {
+			if (node.getValue().equals(x)) {
+				return true;
+			}
+			node = node.next;
+		}
 		return false;
 	}
 
