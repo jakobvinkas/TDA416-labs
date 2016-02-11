@@ -41,7 +41,7 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 			return true;
 		}
 
-		if (current.getValue.equals(x))) {
+		if (current.getValue().equals(x)) {
 			return false;
 		} else if (x.compareTo(current.getValue()) < 0) {
 			// insert node in the middle
@@ -56,12 +56,10 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 		Node node = new Node(x);
 		node.next = current;
 
-		if (previous != null) {
-			previous.next = node;
-		}
-
 		if (current == head) {
 			head = node;
+		} else {
+			previous.next = node;
 		}
 
 		size++;
@@ -84,7 +82,7 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 		Node prev = null;
 		Node current = head;
 		while(x.compareTo(current.getValue()) >= 0) {
-			if(x.compareTo(current.getValue()) == 0){
+			if(x.equals(current.getValue())){
 				return false;
 			}
 
