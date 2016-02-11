@@ -1,16 +1,20 @@
 public class SortedLinkedListSet<E extends Comparable<? super E>> implements SimpleSet<E>{
 	class Node{
-		public Node(E value){
+		private E value;
+		protected Node next;
+
+		public Node(E value) {
 			this.next = null;
 			this.value = value;
 		}
-		private E value;
-		protected Node next;
 
 		public E getValue(){
 			return this.value;
 		}
 
+		public String toString() {
+			return value.toString();
+		}
 	}
 
 	private Node head;
@@ -67,7 +71,7 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 			if(x.compareTo(current.getValue()) == 0){
 				return false;
 			}
-			
+
 			if(current.next == null){
 				Node n = new Node(x);
 				current.next = n;
@@ -97,5 +101,14 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 		return false;
 	}
 
-
+	public String toString() {
+		StringBuilder result = new StringBuilder("[ ")
+		Node node = head;
+		while (node != null) {
+			result.append(node.toString());
+			node = node.next;
+		}
+		result.append("]");
+		return result.toString();
+	}
 }
