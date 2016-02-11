@@ -15,5 +15,14 @@ public class TestingSortedList{
 		list.add(2);
 		System.out.println(list);
 		System.out.println(list.size());
+
+		System.out.println(list.contains(4));
+		System.out.println(list.contains(1337));
+
+		list.remove(10);
+		list.remove(1);
+		System.out.println(list);
+		System.out.println(list.size());
+		System.out.println(list.contains(10));
 	}
 }
