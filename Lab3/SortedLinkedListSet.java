@@ -31,13 +31,13 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 	}
 
 	public boolean add2(E x) {
-		return addRecursive(head, null, x);
+		return addRecursive(null, head, x);
 	}
 
-	private boolean addRecursive(Node current, Node previous, E x) {
+	private boolean addRecursive(Node previous, Node current, E x) {
 		if (current == null) {
 			// insert node last
-			add2Internal(current, previous, x);
+			addAfter(previous, x);
 			return true;
 		}
 
@@ -45,21 +45,23 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 			return false;
 		} else if (x.compareTo(current.getValue()) < 0) {
 			// insert node in the middle
-			add2Internal(current, previous, x);
+			addAfter(previous, x);
 			return true;
 		} else {
-			return addRecursive(current.next, current, x);
+			return addRecursive(current, current.next, x);
 		}
 	}
 
-	private void add2Internal(Node current, Node previous, E x) {
-		Node node = new Node(x);
-		node.next = current;
+	private void addAfter(Node node, E x) {
+		Node inserted = new Node(x);
 
-		if (current == head) {
-			head = node;
+		// if node is null we add to head
+		if (node == null) {
+			inserted.next = head;
+			head = inserted;
 		} else {
-			previous.next = node;
+			inserted.next = node.next;
+			node.next = inserted;
 		}
 
 		size++;
