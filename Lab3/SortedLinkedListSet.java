@@ -41,11 +41,9 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 			return true;
 		}
 
-		int compareResult = x.compareTo(current.getValue());
-
-		if (compareResult == 0) {
+		if (current.getValue.equals(x))) {
 			return false;
-		} else if (compareResult < 0) {
+		} else if (x.compareTo(current.getValue()) < 0) {
 			// insert node in the middle
 			add2Internal(current, previous, x);
 			return true;
