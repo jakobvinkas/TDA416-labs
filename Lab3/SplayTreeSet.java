@@ -23,7 +23,7 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
     }
 
     public int size() {
-        return 0;
+        return this.size;
     }
 
     public boolean add(E x) {
