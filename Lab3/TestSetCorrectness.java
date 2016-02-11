@@ -11,6 +11,17 @@ public class TestSetCorrectness {
             return;
         }
 
-        System.out.println(n1);
+        SimpleSet<Integer> testSet;
+
+        if (n1 == 1) {
+            testSet = new SortedLinkedListSet<>();
+        } else if (n1 == 2) {
+            // testSet = new SplayTreeSet<>();
+        } else {
+            System.out.println("n1 must be either 1 or 2");
+            return;
+        }
+
+
     }
 }
