@@ -26,15 +26,15 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 		this.head = null;
 	}
 
-	int size() {
+	public int size() {
 		return this.size;
 	}
 
-	boolean add2(E x) {
+	public boolean add2(E x) {
 		return addRecursive(head, null, x);
 	}
 
-	boolean addRecursive(Node current, Node previous, E x) {
+	public boolean addRecursive(Node current, Node previous, E x) {
 		if (current == null) {
 			// insert node last
 			Node node = new Node(x);
@@ -58,16 +58,17 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 		}
 	}
 
-	boolean add(E x) {
+	public boolean add(E x) {
+
 		if(head == null){
 			head = new Node(x);
 			size++;
 			return true;
 		}
 
-		Node prev;
+		Node prev = null;
 		Node current = head;
-		while(x.compareTo(current.getValue()) > 0) {
+		while(x.compareTo(current.getValue()) >= 0) {
 			if(x.compareTo(current.getValue()) == 0){
 				return false;
 			}
@@ -94,18 +95,18 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 
 
 	}
-	boolean remove(E x) {
+	public boolean remove(E x) {
 		return false;
 	}
-	boolean contains(E x) {
+	public boolean contains(E x) {
 		return false;
 	}
 
 	public String toString() {
-		StringBuilder result = new StringBuilder("[ ")
+		StringBuilder result = new StringBuilder("[ ");
 		Node node = head;
 		while (node != null) {
-			result.append(node.toString());
+			result.append(node.toString() + " ");
 			node = node.next;
 		}
 		result.append("]");
