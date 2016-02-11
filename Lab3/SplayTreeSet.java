@@ -1,4 +1,4 @@
-public class SplayTreeSet implements SimpleSet {
+public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<E> {
     public int size() {
         return 0;
     }
