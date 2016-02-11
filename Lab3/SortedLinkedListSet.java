@@ -58,11 +58,20 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 		}
 	}
 
-	public boolean add(E x) {
 
+	public boolean add(E x) {
+		if(addHelper(x)){
+			size++;
+			return true;
+		}
+		return false;
+		
+
+
+	}
+	private boolean addHelper(E x){
 		if(head == null){
 			head = new Node(x);
-			size++;
 			return true;
 		}
 
@@ -85,6 +94,7 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 		if (prev == null) {
 			head = new Node(x);
 			head.next = current;
+
 			return true;
 		} else {
 			Node n = new Node(x);
@@ -92,9 +102,8 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 			n.next = current;
 			return true;
 		}
-
-
 	}
+	
 	public boolean remove(E x) {
 		return false;
 	}
