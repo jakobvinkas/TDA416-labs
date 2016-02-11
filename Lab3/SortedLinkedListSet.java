@@ -34,30 +34,40 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 		return addRecursive(head, null, x);
 	}
 
-	public boolean addRecursive(Node current, Node previous, E x) {
+	private boolean addRecursive(Node current, Node previous, E x) {
 		if (current == null) {
 			// insert node last
-			Node node = new Node(x);
-			previous.next = node;
+			add2Internal(current, previous, x);
 			return true;
 		}
 
 		int compareResult = x.compareTo(current.getValue());
+
 		if (compareResult == 0) {
 			return false;
 		} else if (compareResult < 0) {
 			// insert node in the middle
-			Node node = new Node(x);
-			node.next = current;
-			if (previous != null) {
-				previous.next = node;
-			}
+			add2Internal(current, previous, x);
 			return true;
 		} else {
 			return addRecursive(current.next, current, x);
 		}
 	}
 
+	private void add2Internal(Node current, Node previous, E x) {
+		Node node = new Node(x);
+		node.next = current;
+
+		if (previous != null) {
+			previous.next = node;
+		}
+
+		if (current == head) {
+			head = node;
+		}
+
+		size++;
+	}
 
 	public boolean add(E x) {
 		if(addHelper(x)){
@@ -65,10 +75,8 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 			return true;
 		}
 		return false;
-		
-
-
 	}
+
 	private boolean addHelper(E x){
 		if(head == null){
 			head = new Node(x);
@@ -103,7 +111,7 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 			return true;
 		}
 	}
-	
+
 	public boolean remove(E x) {
 		return false;
 	}
