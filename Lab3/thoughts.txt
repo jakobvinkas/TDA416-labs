@@ -1,0 +1,30 @@
+# Thoughts
+
+There are six different operation types for the Splay tree:
+
+1. Zig
+2. Zag
+3. Zig-zig
+4. Zag-zag
+5. Zig-zag
+6. Zag-zig
+
+Each of these operations consists of left and right rotations around different edges. The Zig and Zag operations are special since they operate on the root of the tree.
+
+We can define two methods for left and right rotations around a node:
+
+    void rotateLeft(Node n);
+    void rotateLeft(Node n);
+
+And then use these methods to define methods for the six different operations:
+
+    void zig(Node n);
+    void zag(Node n);
+    void zigZig(Node n);
+    void zagZag(Node n);
+    void zigZag(Node n);
+    void zagZig(Node n);
+
+It would then be trivial to look at the state of the tree to determine which operation that should be run, and then just execute the appropriate method.
+
+We must be careful to not forget to update the `parent` reference when updating the child of a node. I'm thinking that we should implement `setLeftChild(Node n)` and `setRightChild(Node n)` that automatically takes care of updating `parent`.
