@@ -2,22 +2,22 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
     class Node {
         protected E value;
         protected Node parent;
-        protected Node leftChild;
-        protected Node rightChild;
+        protected Node left;
+        protected Node right;
 
         public Node(E value) {
             this.value = value;
             this.parent = null;
-            this.leftChild = null;
-            this.rightChild = null;
+            this.left = null;
+            this.right = null;
         }
 
         public boolean isLeftChild() {
-            return this.parent != null && this.parent.leftChild == this;
+            return this.parent != null && this.parent.left == this;
         }
 
         public boolean isRightChild() {
-            return this.parent != null && this.parent.rightChild == this;
+            return this.parent != null && this.parent.right == this;
         }
 
         public boolean isRoot() {
@@ -25,13 +25,17 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         }
 
         public void setLeftChild(Node node) {
-            this.leftChild = node;
+            this.left = node;
             node.parent = this;
         }
 
         public void setRightChild(Node node) {
-            this.rightChild = node;
+            this.right = node;
             node.parent = this;
+        }
+
+        public String toString() {
+            return value.toString();
         }
     }
 
@@ -69,5 +73,19 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         root.right = node.left;
         node.left = root;
         root = node;
+    }
+
+    public String toString() {
+        return toStringRecursive(root);
+    }
+
+    private String toStringRecursive(Node node) {
+        if (node == null) {
+            return "";
+        }
+        String str = node.toString() + " ";
+        str += toStringRecursive(node.left);
+        str += toStringRecursive(node.right);
+        return str;
     }
 }
