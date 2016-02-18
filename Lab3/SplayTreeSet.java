@@ -34,6 +34,17 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
             node.parent = this;
         }
 
+        public boolean replaceChild(Node child, Node node) {
+            if (child == left) {
+                this.setLeftChild(node);
+            } else if (child == right) {
+                this.setRightChild(node);
+            } else {
+                return false;
+            }
+            return true;
+        }
+
         public String toString() {
             return value.toString();
         }
@@ -100,11 +111,19 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         parent.setLeftChild(node.right);
         node.setRightChild(parent);
 
-        if (parent.isLeftChild()) {
-            grandParent.setLeftChild(node);
-        } else if (parent.isRightChild()) {
-            grandParent.setRightChild(node);
-        } else {
+        if (!grandParent.replaceChild(parent, node)) {
+            root = node;
+        }
+    }
+
+    private void rotateLeft(Node node) {
+        Node parent = node.parent;
+        Node grandParent = parent.parent;
+
+        parent.setRightChild(node.left);
+        node.setLeftChild(parent);
+
+        if (!grandParent.replaceChild(parent, node)) {
             root = node;
         }
     }
