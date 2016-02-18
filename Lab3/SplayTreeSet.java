@@ -93,6 +93,22 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
 
     }
 
+    private void rotateRight(Node node) {
+        Node parent = node.parent;
+        Node grandParent = parent.parent;
+
+        parent.setLeftChild(node.right);
+        node.setRightChild(parent);
+
+        if (parent.isLeftChild()) {
+            grandParent.setLeftChild(node);
+        } else if (parent.isRightChild()) {
+            grandParent.setRightChild(node);
+        } else {
+            root = node;
+        }
+    }
+
     public boolean remove(E x) {
         return false;
     }
