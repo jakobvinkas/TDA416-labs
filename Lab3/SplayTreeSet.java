@@ -227,7 +227,7 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         StringBuilder builder = new StringBuilder();
         while (!queue.isEmpty()) {
             Node node = queue.remove();
-            builder.append(node.toString());
+            builder.append(node.toString() + " ");
             if (node.left != null) {
                 queue.add(node.left);
             }
