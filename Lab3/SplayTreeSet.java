@@ -142,13 +142,31 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
             grandParent.replaceChild(parent, node);
         }
     }
-
+    //RIGHT
     private void zig(Node node) {
         this.rotateRight(node);
     }
-
+    //LEFT
     private void zag(Node node) {
         this.rotateLeft(node);
+    }
+    private void zigzig(Node node){
+    	zig(node.parent);
+    	zig(node);
+    }
+    private void zagzag(Node node){
+    	zag(node.parent);
+    	zag(node);
+    }
+
+    private void zigzag(Node node){
+    	zag(node);
+    	zig(node);
+    }
+
+    private void zagzig(Node node){
+    	zig(node);
+    	zag(node);
     }
 
     public boolean remove(E x) {
