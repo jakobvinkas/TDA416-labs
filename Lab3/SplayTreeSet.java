@@ -25,24 +25,35 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         }
 
         public void setLeftChild(Node node) {
+            if (this.left != null) {
+                this.left.parent = null;
+            }
+
             this.left = node;
-            node.parent = this;
+
+            if (node != null) {
+                node.parent = this;
+            }
         }
 
         public void setRightChild(Node node) {
+            if (this.right != null) {
+                this.right.parent = null;
+            }
+
             this.right = node;
-            node.parent = this;
+
+            if (node != null) {
+                node.parent = this;
+            }
         }
 
-        public boolean replaceChild(Node child, Node node) {
+        public void replaceChild(Node child, Node node) {
             if (child == left) {
                 this.setLeftChild(node);
             } else if (child == right) {
                 this.setRightChild(node);
-            } else {
-                return false;
             }
-            return true;
         }
 
         public String toString() {
@@ -101,7 +112,7 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
     }
 
     private void splay(Node node) {
-
+        rotateRight(node);
     }
 
     private void rotateRight(Node node) {
@@ -111,8 +122,10 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         parent.setLeftChild(node.right);
         node.setRightChild(parent);
 
-        if (!grandParent.replaceChild(parent, node)) {
+        if (grandParent == null) {
             root = node;
+        } else {
+            grandParent.replaceChild(parent, node);
         }
     }
 
@@ -123,8 +136,10 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         parent.setRightChild(node.left);
         node.setLeftChild(parent);
 
-        if (!grandParent.replaceChild(parent, node)) {
+        if (grandParent == null) {
             root = node;
+        } else {
+            grandParent.replaceChild(parent, node);
         }
     }
 
