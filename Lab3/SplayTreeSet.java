@@ -52,7 +52,45 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
     }
 
     public boolean add(E x) {
-        return false;
+        Node node = new Node(x);
+        if (root == null) {
+            root = node;
+            this.size++;
+            return true;
+        } else {
+            if (addRecursive(node, root)) {
+                splay(node);
+                this.size++;
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    private boolean addRecursive(Node node, Node root) {
+        int comparison = node.value.compareTo(root.value);
+        if (comparison == 0) {
+            return false;
+        } else if (comparison < 0) {
+            if (root.left == null) {
+                root.setLeftChild(node);
+                return true;
+            } else {
+                return addRecursive(node, root.left);
+            }
+        } else {
+            if (root.right == null) {
+                root.setRightChild(node);
+                return true;
+            } else {
+                return addRecursive(node, root.right);
+            }
+        }
+    }
+
+    private void splay(Node node) {
+
     }
 
     public boolean remove(E x) {
