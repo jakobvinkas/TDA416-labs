@@ -112,7 +112,9 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
     }
 
     private void splay(Node node) {
-
+    	if(node == root){
+    		return;
+    	}
         if(node.parent == root){
         	if(node.isLeftChild()){
         		zig(node);
@@ -133,7 +135,8 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
 	        	zagzig(node);
 	        }
        	}
-       
+       	splay(node);
+       	
     }
 
     private void rotateRight(Node node) {
