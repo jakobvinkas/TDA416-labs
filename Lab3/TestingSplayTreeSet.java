@@ -1,23 +1,28 @@
 public class TestingSplayTreeSet{
 
 	public static void main(String[] args){
-		// testAdd();
-		testRotate();
+		testAdd();
+		//testRotate();
 	}
 
 	private static void testAdd() {
 		SimpleSet<Integer> list = new SplayTreeSet<>();
 
-		list.add(4);
 		list.add(2);
-		list.add(9);
-		list.add(10);
-		list.add(10);
-		list.add(10);
-		list.add(99);
-		list.add(3);
+		System.out.println(list);
 		list.add(1);
-		list.add(2);
+		System.out.println(list);
+		list.add(4);
+		System.out.println(list);
+		list.add(5);
+		System.out.println(list);
+		list.add(9);
+		System.out.println(list);
+		list.add(3);
+		System.out.println(list);
+		list.add(6);
+		System.out.println(list);
+		list.add(7);
 		System.out.println(list);
 	}
 
