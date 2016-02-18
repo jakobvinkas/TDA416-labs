@@ -24,6 +24,10 @@ public class TestingSplayTreeSet{
 		System.out.println(list);
 		list.add(7);
 		System.out.println(list);
+		list.add(7);
+		System.out.println(list);
+		list.add(3);
+		System.out.println(list);
 	}
 
 	private static void testRotate() {

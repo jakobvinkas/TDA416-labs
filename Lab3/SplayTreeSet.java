@@ -113,8 +113,22 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         }
     }
 
+    private void debug(Node node) {
+        System.out.println("Root " + root);
+        System.out.println("Node " + node);
+        System.out.println("Parent " + node.parent);
+        if (node.parent != null) {
+            System.out.println("Grand parent " + node.parent.parent);
+        }
+        if (root != null) {
+            System.out.println("Root left child " + root.left);
+            System.out.println("Root right child " + root.right);
+        }
+        System.out.println();
+    }
+
     private void splay(Node node) {
-    	if(node == root){
+        if(node == root){
     		return;
     	}
         if(node.parent == root){
@@ -144,28 +158,44 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         Node parent = node.parent;
         Node grandParent = parent.parent;
 
-        parent.setLeftChild(node.right);
-        node.setRightChild(parent);
-
         if (grandParent == null) {
             root = node;
-        } else {
-            grandParent.replaceChild(parent, node);
+        } else if (parent.isLeftChild()) {
+            grandParent.left = node;
+        } else if (parent.isRightChild()) {
+            grandParent.right = node;
         }
+        node.parent = grandParent;
+
+        parent.left = node.right;
+        if (node.right != null) {
+            node.right.parent = parent;
+        }
+
+        node.right = parent;
+        parent.parent = node;
     }
 
     private void rotateLeft(Node node) {
         Node parent = node.parent;
         Node grandParent = parent.parent;
 
-        parent.setRightChild(node.left);
-        node.setLeftChild(parent);
-
         if (grandParent == null) {
             root = node;
-        } else {
-            grandParent.replaceChild(parent, node);
+        } else if (parent.isLeftChild()) {
+            grandParent.left = node;
+        } else if (parent.isRightChild()) {
+            grandParent.right = node;
         }
+        node.parent = grandParent;
+
+        parent.right = node.left;
+        if (node.left != null) {
+            node.left.parent = parent;
+        }
+
+        node.left = parent;
+        parent.parent = node;
     }
     //RIGHT
     private void zig(Node node) {
