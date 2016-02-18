@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<E> {
     class Node {
         protected E value;
@@ -136,7 +138,6 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
 	        }
        	}
        	splay(node);
-       	
     }
 
     private void rotateRight(Node node) {
@@ -201,9 +202,9 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         return false;
     }
 
-    public String toString() {
-        return toStringRecursive(root);
-    }
+    // public String toString() {
+    //     return toStringRecursive(root);
+    // }
 
     private String toStringRecursive(Node node) {
         if (node == null) {
@@ -213,5 +214,28 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         str += toStringRecursive(node.left);
         str += toStringRecursive(node.right);
         return str;
+    }
+
+    public String toString() {
+        if (root == null) {
+            return "";
+        }
+
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+
+        StringBuilder builder = new StringBuilder();
+        while (!queue.isEmpty()) {
+            Node node = queue.remove();
+            builder.append(node.toString());
+            if (node.left != null) {
+                queue.add(node.left);
+            }
+            if (node.right != null) {
+                queue.add(node.right);
+            }
+        }
+
+        return builder.toString();
     }
 }
