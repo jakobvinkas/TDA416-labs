@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<E> {
-    class Node implements Comparable<Node> {
+    class Node {
         protected E value;
         protected Node parent;
         protected Node left;
@@ -44,10 +44,6 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
             }
         }
 
-        public int compareTo(Node other) {
-            return this.value.compareTo(other.value);
-        }
-
         public String toString() {
             return value.toString();
         }
@@ -57,8 +53,15 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
     int size;
 
     public SplayTreeSet() {
-        this.root = null;
+        setRoot(null);
         this.size = 0;
+    }
+
+    private void setRoot(Node node) {
+        this.root = node;
+        if (node != null) {
+            node.parent = null;
+        }
     }
 
     public int size() {
@@ -69,12 +72,12 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         Node node = new Node(x);
         boolean added = false;
 
-        if (root == null) {
-            root = node;
+        if (this.root == null) {
+            setRoot(node);
             added = true;
         }
 
-        if (addRecursive(node, root)) {
+        if (addRecursive(node, this.root)) {
             splay(node);
             added = true;
         }
@@ -88,7 +91,7 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
     }
 
     private boolean addRecursive(Node node, Node root) {
-        int comparison = node.compareTo(root);
+        int comparison = node.value.compareTo(root.value);
         if (comparison == 0) {
             return false;
         } else if (comparison < 0) {
@@ -152,8 +155,7 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         Node grandParent = parent.parent;
 
         if (grandParent == null) {
-            root = node;
-            node.parent = null;
+            setRoot(node);
         } else {
             grandParent.replaceChild(parent, node);
         }
@@ -167,8 +169,7 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         Node grandParent = parent.parent;
 
         if (grandParent == null) {
-            root = node;
-            node.parent = null;
+            setRoot(node);
         } else {
             grandParent.replaceChild(parent, node);
         }
@@ -206,11 +207,74 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
     }
 
     public boolean remove(E x) {
+        Node nodeToDelete = find(x);
+        if (nodeToDelete != null) {
+            Node s = nodeToDelete.left;
+            Node t = nodeToDelete.right;
+
+            if (s == null) {
+                setRoot(t);
+            } else if (t == null) {
+                setRoot(s);
+            } else {
+                setRoot(s);
+                findMax(s);
+                this.root.setRightChild(t);
+            }
+
+            size--;
+            return true;
+        }
+
         return false;
     }
 
+    private Node find(E x) {
+        Node node = new Node(x);
+
+        Node result = findRecursive(node, this.root);
+        if (result != null) {
+            splay(result);
+            return result;
+        }
+
+        return null;
+    }
+
+    private Node findRecursive(Node node, Node root) {
+        if (root == null) {
+            return null;
+        }
+
+        int comparison = node.value.compareTo(root.value);
+
+        if (comparison == 0) {
+            return root;
+        } else if (comparison < 0) {
+            return findRecursive(node, root.left);
+        } else {
+            return findRecursive(node, root.right);
+        }
+    }
+
+    private Node findMax(Node root) {
+        if (root == null) {
+            return null;
+        }
+
+        if (root.right == null) {
+            splay(root);
+            return root;
+        } else {
+            return findMax(root.right);
+        }
+    }
+
     public boolean contains(E x) {
-        return false;
+        if (find(x) == null) {
+            return false;
+        }
+        return true;
     }
 
     public String toString() {

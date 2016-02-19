@@ -37,30 +37,35 @@ public class TestSetCorrectness {
                 int value = random.nextInt(n4);
                 switch (operation) {
                     case 0: // size
+                        System.out.println("Operation: size");
                         if (testSet.size() != javaSet.size()) {
                             System.out.println("Error! size(): reset " + i + ", operation " + j);
                             return;
                         }
                         break;
                     case 1: // add
+                        System.out.println("Operation: add(" + value + ")");
                         if (testSet.add(value) != javaSet.add(value)) {
                             System.out.println("Error! add(" + value + "): reset " + i + ", operation " + j);
                             return;
                         }
                         break;
                     case 2: // remove
+                        System.out.println("Operation: remove(" + value + ")");
                         if (testSet.remove(value) != javaSet.remove(value)) {
                             System.out.println("Error! remove(" + value + "): reset " + i + ", operation " + j);
                             return;
                         }
                         break;
                     case 3: // contains
+                        System.out.println("Operation: contains(" + value + ")");
                         if (testSet.contains(value) != javaSet.contains(value)) {
                             System.out.println("Error! contains(" + value + "): reset " + i + ", operation " + j);
                             return;
                         }
                         break;
                 }
+                System.out.println(testSet);
             }
         }
 
