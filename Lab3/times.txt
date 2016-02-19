@@ -1,0 +1,125 @@
+# Speed
+
+## SortedLinkedListSet
+
+### 100
+
+time: 11.291s
+operations: 50160713
+time/operation: 225.0964813837475ns
+
+### 200
+
+time: 19.37s
+operations: 50240896
+time/operation: 385.54248714035674ns
+
+### 300
+
+time: 14.862s
+operations: 25141268
+time/operation: 591.1396354392308ns
+
+### 400
+
+time: 11.088s
+operations: 12571723
+time/operation: 881.9793436428722ns
+
+### 500
+
+time: 15.959s
+operations: 12573276
+time/operation: 1269.2793827161672ns
+
+### 600
+
+time: 10.183s
+operations: 6287519
+time/operation: 1619.5577301635192ns
+
+### 700
+
+time: 12.871s
+operations: 6287560
+time/operation: 2047.058000241747ns
+
+### 800
+
+time: 16.237s
+operations: 6288672
+time/operation: 2581.9441688165643ns
+
+### 900
+
+time: 18.853s
+operations: 6284978
+time/operation: 2999.6922821368667ns
+
+### 1000
+
+time: 10.83s
+operations: 3144318
+time/operation: 3444.3081138739785ns
+
+## SplayTreeSet
+
+### 1000
+
+time: 11.777s
+operations: 50302074
+time/operation: 234.12553526122997ns
+
+### 2000
+
+time: 13.403s
+operations: 50318748
+time/operation: 266.36195320281024ns
+
+### 3000
+
+time: 14.872s
+operations: 50324268
+time/operation: 295.523424205594ns
+
+### 4000
+
+time: 15.723s
+operations: 50320109
+time/operation: 312.4595775418531ns
+
+### 5000
+
+time: 16.537s
+operations: 50329138
+time/operation: 328.577056098199ns
+
+### 6000
+
+time: 17.429s
+operations: 50329130
+time/operation: 346.3004427058445ns
+
+### 7000
+
+time: 17.842s
+operations: 50325369
+time/operation: 354.5329195698495ns
+
+### 8000
+
+time: 18.324s
+operations: 50331023
+time/operation: 364.0696911723809ns
+
+### 9000
+
+time: 19.166s
+operations: 50334733
+time/operation: 380.7708684975045ns
+
+### 10000
+
+time: 19.368s
+operations: 50327301
+time/operation: 384.84082426752826ns
