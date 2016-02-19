@@ -49,8 +49,8 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         }
     }
 
-    Node root;
-    int size;
+    private Node root;
+    private int size;
 
     public SplayTreeSet() {
         setRoot(null);
@@ -109,20 +109,6 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
                 return addRecursive(node, root.right);
             }
         }
-    }
-
-    private void debug(Node node) {
-        System.out.println("Root " + root);
-        System.out.println("Node " + node);
-        System.out.println("Parent " + node.parent);
-        if (node.parent != null) {
-            System.out.println("Grand parent " + node.parent.parent);
-        }
-        if (root != null) {
-            System.out.println("Root left child " + root.left);
-            System.out.println("Root right child " + root.right);
-        }
-        System.out.println();
     }
 
     private void splay(Node node) {
@@ -294,26 +280,17 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         toStringRecursive(node.right, builder);
     }
 
-    // public String toString() {
-    //     if (root == null) {
-    //         return "";
-    //     }
-    //
-    //     Queue<Node> queue = new LinkedList<>();
-    //     queue.add(root);
-    //
-    //     StringBuilder builder = new StringBuilder();
-    //     while (!queue.isEmpty()) {
-    //         Node node = queue.remove();
-    //         builder.append(node.toString() + " ");
-    //         if (node.left != null) {
-    //             queue.add(node.left);
-    //         }
-    //         if (node.right != null) {
-    //             queue.add(node.right);
-    //         }
-    //     }
-    //
-    //     return builder.toString();
-    // }
+    private void debug(Node node) {
+        System.out.println("Root " + root);
+        System.out.println("Node " + node);
+        System.out.println("Parent " + node.parent);
+        if (node.parent != null) {
+            System.out.println("Grand parent " + node.parent.parent);
+        }
+        if (root != null) {
+            System.out.println("Root left child " + root.left);
+            System.out.println("Root right child " + root.right);
+        }
+        System.out.println();
+    }
 }
