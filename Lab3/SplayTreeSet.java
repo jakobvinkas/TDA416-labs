@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<E> {
-    class Node {
+    class Node implements Comparable<Node> {
         protected E value;
         protected Node parent;
         protected Node left;
@@ -22,40 +22,30 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
             return this.parent != null && this.parent.right == this;
         }
 
-        public boolean isRoot() {
-            return this.parent == null;
-        }
-
         public void setLeftChild(Node node) {
-            if (this.left != null) {
-                this.left.parent = null;
-            }
-
             this.left = node;
-
             if (node != null) {
                 node.parent = this;
             }
         }
 
         public void setRightChild(Node node) {
-            if (this.right != null) {
-                this.right.parent = null;
-            }
-
             this.right = node;
-
             if (node != null) {
                 node.parent = this;
             }
         }
 
         public void replaceChild(Node child, Node node) {
-            if (child == left) {
+            if (child == this.left) {
                 this.setLeftChild(node);
-            } else if (child == right) {
+            } else if (child == this.right) {
                 this.setRightChild(node);
             }
+        }
+
+        public int compareTo(Node other) {
+            return this.value.compareTo(other.value);
         }
 
         public String toString() {
@@ -77,23 +67,28 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
 
     public boolean add(E x) {
         Node node = new Node(x);
+        boolean added = false;
+
         if (root == null) {
             root = node;
-            this.size++;
+            added = true;
+        }
+
+        if (addRecursive(node, root)) {
+            splay(node);
+            added = true;
+        }
+
+        if (added) {
+            size++;
             return true;
         } else {
-            if (addRecursive(node, root)) {
-                splay(node);
-                this.size++;
-                return true;
-            } else {
-                return false;
-            }
+            return false;
         }
     }
 
     private boolean addRecursive(Node node, Node root) {
-        int comparison = node.value.compareTo(root.value);
+        int comparison = node.compareTo(root);
         if (comparison == 0) {
             return false;
         } else if (comparison < 0) {
@@ -128,30 +123,28 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
     }
 
     private void splay(Node node) {
-        if(node == root){
+        if (node == root) {
     		return;
     	}
-        if(node.parent == root){
-        	if(node.isLeftChild()){
+
+        if (node.parent == root) {
+        	if (node.isLeftChild()) {
         		zig(node);
-	        }else if(node.isRightChild()){
+	        } else if(node.isRightChild()) {
 	        	zag(node);
 	        }
-        }
-       	else{
-       		if(node.isLeftChild() && node.parent.isLeftChild()){
+        } else {
+       		if (node.isLeftChild() && node.parent.isLeftChild()) {
         		zigzig(node);
-        	}
-	        else if(node.isRightChild() && node.parent.isRightChild()){
+        	} else if (node.isRightChild() && node.parent.isRightChild()) {
 	        	zagzag(node);
-	        }
-	        else if(node.isRightChild() && node.parent.isLeftChild()){
+	        } else if (node.isRightChild() && node.parent.isLeftChild()) {
 	        	zigzag(node);
-	        }else if(node.isLeftChild() && node.parent.isRightChild()){
+	        } else if(node.isLeftChild() && node.parent.isRightChild()) {
 	        	zagzig(node);
 	        }
+            splay(node);
        	}
-       	splay(node);
     }
 
     private void rotateRight(Node node) {
@@ -160,20 +153,13 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
 
         if (grandParent == null) {
             root = node;
-        } else if (parent.isLeftChild()) {
-            grandParent.left = node;
-        } else if (parent.isRightChild()) {
-            grandParent.right = node;
-        }
-        node.parent = grandParent;
-
-        parent.left = node.right;
-        if (node.right != null) {
-            node.right.parent = parent;
+            node.parent = null;
+        } else {
+            grandParent.replaceChild(parent, node);
         }
 
-        node.right = parent;
-        parent.parent = node;
+        parent.setLeftChild(node.right);
+        node.setRightChild(parent);
     }
 
     private void rotateLeft(Node node) {
@@ -182,44 +168,39 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
 
         if (grandParent == null) {
             root = node;
-        } else if (parent.isLeftChild()) {
-            grandParent.left = node;
-        } else if (parent.isRightChild()) {
-            grandParent.right = node;
-        }
-        node.parent = grandParent;
-
-        parent.right = node.left;
-        if (node.left != null) {
-            node.left.parent = parent;
+            node.parent = null;
+        } else {
+            grandParent.replaceChild(parent, node);
         }
 
-        node.left = parent;
-        parent.parent = node;
+        parent.setRightChild(node.left);
+        node.setLeftChild(parent);
     }
-    //RIGHT
+
     private void zig(Node node) {
         this.rotateRight(node);
     }
-    //LEFT
+
     private void zag(Node node) {
         this.rotateLeft(node);
     }
-    private void zigzig(Node node){
+
+    private void zigzig(Node node) {
     	zig(node.parent);
     	zig(node);
     }
-    private void zagzag(Node node){
+
+    private void zagzag(Node node) {
     	zag(node.parent);
     	zag(node);
     }
 
-    private void zigzag(Node node){
+    private void zigzag(Node node) {
     	zag(node);
     	zig(node);
     }
 
-    private void zagzig(Node node){
+    private void zagzig(Node node) {
     	zig(node);
     	zag(node);
     }
@@ -233,17 +214,20 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
     }
 
     public String toString() {
-        return toStringRecursive(root);
+        StringBuilder builder = new StringBuilder();
+        toStringRecursive(root, builder);
+        return builder.toString();
     }
 
-    private String toStringRecursive(Node node) {
+    private void toStringRecursive(Node node, StringBuilder builder) {
         if (node == null) {
-            return "";
+            return;
         }
-        String str = node.toString() + " ";
-        str += toStringRecursive(node.left);
-        str += toStringRecursive(node.right);
-        return str;
+
+        builder.append(node.toString());
+        builder.append(" ");
+        toStringRecursive(node.left, builder);
+        toStringRecursive(node.right, builder);
     }
 
     // public String toString() {
