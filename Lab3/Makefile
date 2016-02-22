@@ -6,8 +6,5 @@ clean:
 build:
 	javac -d bin *.java
 
-run: build
-	java -cp bin
-
 tests: build
-	java -cp bin TestSetCorrectness 2 1000 100 20
+	java -cp bin TestSetCorrectness ${type} 1000 100 20
