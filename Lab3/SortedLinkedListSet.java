@@ -1,5 +1,5 @@
-public class SortedLinkedListSet<E extends Comparable<? super E>> implements SimpleSet<E>{
-	class Node{
+public class SortedLinkedListSet<E extends Comparable<? super E>> implements SimpleSet<E> {
+	class Node {
 		private E value;
 		protected Node next;
 
@@ -8,7 +8,7 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 			this.value = value;
 		}
 
-		public E getValue(){
+		public E getValue() {
 			return this.value;
 		}
 
@@ -20,8 +20,7 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 	private Node head;
 	private int size;
 
-
-	public SortedLinkedListSet(){
+	public SortedLinkedListSet() {
 		this.size = 0;
 		this.head = null;
 	}
@@ -30,45 +29,8 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 		return this.size;
 	}
 
-	public boolean add2(E x) {
-		return addRecursive(null, head, x);
-	}
-
-	private boolean addRecursive(Node previous, Node current, E x) {
-		if (current == null) {
-			// insert node last
-			addAfter(previous, x);
-			return true;
-		}
-
-		if (current.getValue().equals(x)) {
-			return false;
-		} else if (x.compareTo(current.getValue()) < 0) {
-			// insert node in the middle
-			addAfter(previous, x);
-			return true;
-		} else {
-			return addRecursive(current, current.next, x);
-		}
-	}
-
-	private void addAfter(Node node, E x) {
-		Node inserted = new Node(x);
-
-		// if node is null we add to head
-		if (node == null) {
-			inserted.next = head;
-			head = inserted;
-		} else {
-			inserted.next = node.next;
-			node.next = inserted;
-		}
-
-		size++;
-	}
-
 	public boolean add(E x) {
-		if(addHelper(x)){
+		if (addHelper(x)) {
 			size++;
 			return true;
 		}
@@ -76,36 +38,48 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 	}
 
 	private boolean addHelper(E x){
-		if(head == null){
-			head = new Node(x);
+		Node node = new Node(x);
+
+		// if head is null the list is empty, and we simply set the inserted
+		// node as the new head
+		if (head == null) {
+			head = node;
 			return true;
 		}
 
 		Node prev = null;
 		Node current = head;
-		while(x.compareTo(current.getValue()) >= 0) {
-			if(x.equals(current.getValue())){
+
+		// iterate through the list until we reach a value that is larger than x
+		while (x.compareTo(current.getValue()) >= 0) {
+			// if we find a value in the list that is equal to x we just return false
+			if (x.equals(current.getValue())) {
 				return false;
 			}
 
-			if(current.next == null){
-				Node n = new Node(x);
-				current.next = n;
+			// if we have reached the end of the list we add the new node after
+			// the last node
+			if (current.next == null) {
+				current.next = node;
 				return true;
 			}
+
 			prev = current;
 			current = current.next;
 		}
 
+		// if x is smaller than the first node in the list we never entered
+		// the loop above, and we add x as the new head of the list. otherwise
+		// we insert the node in the middle of the list by setting the previous
+		// node's pointer to the new node and the new node's pointer to the
+		// next node.
 		if (prev == null) {
-			head = new Node(x);
+			head = node;
 			head.next = current;
-
 			return true;
 		} else {
-			Node n = new Node(x);
-			prev.next = n;
-			n.next = current;
+			prev.next = node;
+			node.next = current;
 			return true;
 		}
 	}
@@ -114,7 +88,9 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 		Node prev = null;
 		Node node = head;
 
+		// iterate through the list until we reach the end of it
 		while (node != null) {
+			// if the current node's value is equal to x, we remove that node
 			if (node.getValue().equals(x)) {
 				if (node == head) {
 					head = node.next;
@@ -128,17 +104,22 @@ public class SortedLinkedListSet<E extends Comparable<? super E>> implements Sim
 			node = node.next;
 		}
 
+		// if the end was reached the value is not in the list
 		return false;
 	}
 
 	public boolean contains(E x) {
 		Node node = head;
+
+		// iterate through the list until we reach the end of it
 		while (node != null) {
 			if (node.getValue().equals(x)) {
 				return true;
 			}
 			node = node.next;
 		}
+
+		// if the end was reached the value is not in the list
 		return false;
 	}
 

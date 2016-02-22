@@ -1,0 +1,36 @@
+public boolean add2(E x) {
+    return addRecursive(null, head, x);
+}
+
+private boolean addRecursive(Node previous, Node current, E x) {
+    if (current == null) {
+        // insert node last
+        addAfter(previous, x);
+        return true;
+    }
+
+    if (current.getValue().equals(x)) {
+        return false;
+    } else if (x.compareTo(current.getValue()) < 0) {
+        // insert node in the middle
+        addAfter(previous, x);
+        return true;
+    } else {
+        return addRecursive(current, current.next, x);
+    }
+}
+
+private void addAfter(Node node, E x) {
+    Node inserted = new Node(x);
+
+    // if node is null we add to head
+    if (node == null) {
+        inserted.next = head;
+        head = inserted;
+    } else {
+        inserted.next = node.next;
+        node.next = inserted;
+    }
+
+    size++;
+}
