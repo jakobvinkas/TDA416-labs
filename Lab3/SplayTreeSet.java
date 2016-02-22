@@ -39,7 +39,6 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         /**
          * Replaces a child of this node with a new node.
          */
-        */
         public void replaceChild(Node child, Node node) {
             if (child == this.left) {
                 this.setLeftChild(node);
