@@ -35,8 +35,10 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
                 node.parent = this;
             }
         }
-        /**Replaces the node with the child depending on whether the child is the left child of grandparent or not.
-       		The Node that will call this method will be grandparent of the node.
+
+        /**
+         * Replaces a child of this node with a new node.
+         */
         */
         public void replaceChild(Node child, Node node) {
             if (child == this.left) {
@@ -69,10 +71,13 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
     public int size() {
         return this.size;
     }
-    /** Inserts an element to the tree if and only if the element does not already exist. No duplicates are allowed.
-	 @param x The element to insert
-	 @return true if the element has been added, false otherwise
-    */
+    /**
+     * Inserts an element to the tree if and only if the element does not
+     * already exist. No duplicates are allowed.
+     *
+	 * @param x The element to insert
+	 * @return true if the element has been added, false otherwise
+     */
     public boolean add(E x) {
         Node node = new Node(x);
         boolean added = false;
@@ -94,11 +99,15 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
             return false;
         }
     }
-    /**Using binary-search to find correct place to insert our node. No duplicates allowed
-    @param node Node to be added
-    @param root Root of a given subtree.
-    @return true if the element has been added, false otherwise.
-    */
+
+    /**
+     * Using binary-search to find correct place to insert our node.
+     * No duplicates allowed.
+     *
+     * @param node Node to be added
+     * @param root Root of a given subtree.
+     * @return true if the element has been added, false otherwise.
+     */
     private boolean addRecursive(Node node, Node root) {
         int comparison = node.value.compareTo(root.value);
         if (comparison == 0) {
@@ -119,17 +128,21 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
             }
         }
     }
-    /**Performs splaying on a node. This is done by rotation of the node up to the root and keeping the properties of a splay tree.
-    @param node The node to be splayed.
-    */
+
+    /**
+     * Performs splaying on a node. This is done by rotation of the node up to
+     * the root and keeping the properties of a splay tree.
+     *
+     * @param node The node to be splayed.
+     */
     private void splay(Node node) {
         if (node == root) { //We have splayed the node to the root, we are done.
     		return;
-    	}	
+    	}
 
         if (node.parent == root) { //The node is one level away from the root.
         	if (node.isLeftChild()) { //If the node is the left child of the root, perform right rotation
-        		zig(node); 
+        		zig(node);
 	        } else if(node.isRightChild()) {//If the node is the right child of the root, perform left rotation
 	        	zag(node);
 	        }
@@ -146,9 +159,13 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
             splay(node);
        	}
     }
-    /**Performs right rotation on a node.
-    @param node Node to be right-rotated
-    */
+
+    /**
+     * Performs right rotation on a node. This method will update the root
+     * node if the node's parent is the root.
+     *
+     * @param node Node to be right-rotated
+     */
     private void rotateRight(Node node) {
         Node parent = node.parent;
         Node grandParent = parent.parent;
@@ -156,15 +173,19 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         if (grandParent == null) {//No grandparent, means that the parent is the root
             setRoot(node);
         } else {
-            grandParent.replaceChild(parent, node);//Replaces node with parent 
+            grandParent.replaceChild(parent, node);//Replaces node with parent
         }
 
         parent.setLeftChild(node.right);
         node.setRightChild(parent);
     }
-    /**Performs left rotation on a node
-    @param node Node to be left-rotated
-    */
+
+    /**
+     * Performs left rotation on a node. This method will update the root
+     * node if the node's parent is the root.
+     *
+     * @param node Node to be left-rotated
+     */
     private void rotateLeft(Node node) {
         Node parent = node.parent;
         Node grandParent = parent.parent;
@@ -172,7 +193,7 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         if (grandParent == null) {
             setRoot(node);
         } else {
-            grandParent.replaceChild(parent, node);//Replaces node with parent 
+            grandParent.replaceChild(parent, node);
         }
 
         parent.setRightChild(node.left);
@@ -206,10 +227,13 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
     	zig(node);
     	zag(node);
     }
-    /**Removes a given element from the tree.
-    @param x The element to be removed
-    @return true if the element has been removed, false otherwise.
-    */
+
+    /**
+     * Removes a given element from the tree.
+     *
+     * @param x The element to be removed
+     * @return true if the element has been removed, false otherwise.
+     */
     public boolean remove(E x) {
         Node nodeToDelete = find(x);
         if (nodeToDelete != null) { //If the node was found
@@ -221,7 +245,7 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
             } else if (t == null) {//No right subtree exists
                 setRoot(s);
             } else {
-                setRoot(s); 
+                setRoot(s);
                 findMax(s); //Find max value of left subtree. This method splays the max to the root.
                 this.root.setRightChild(t);
             }
@@ -232,10 +256,13 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
 
         return false;
     }
-    /**Finds a given element in the tree
-    @param x Element to search for in the tree
-    @return The node that has been found, null otherwise.
-    */
+
+    /**
+     * Finds a given element in the tree.
+     *
+     * @param x Element to search for in the tree
+     * @return The node that has been found, null otherwise.
+     */
     private Node find(E x) {
         Node node = new Node(x);
 
@@ -247,8 +274,10 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
 
         return null;
     }
-    /**Implements binary search
-    */
+
+    /**
+     * Implements binary search
+     */
     private Node findRecursive(Node node, Node root) {
         if (root == null) {
             return null;
@@ -264,10 +293,14 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
             return findRecursive(node, root.right);
         }
     }
-    /**Finds the highest node starting from a given node. To find the highest value we need to traverse through the right children of a tree.
-    @param root Starting node to search a Node with highest value
-    @return Node that is max, if the tree is empty then return null.
-    */
+
+    /**
+     * Finds the highest node starting from a given node. To find the highest
+     * value we need to traverse through the right children of a tree.
+     *
+     * @param root Starting node to search a Node with highest value
+     * @return Node that is max, if the tree is empty then return null.
+     */
     private Node findMax(Node root) {
         if (root == null) {
             return null;
@@ -281,8 +314,9 @@ public class SplayTreeSet<E extends Comparable<? super E>> implements SimpleSet<
         }
     }
 
-    /**Checks whether or not an element exists in the tree.
-    */
+    /**
+     * Checks whether or not an element exists in the tree.
+     */
     public boolean contains(E x) {
         if (find(x) == null) {
             return false;
