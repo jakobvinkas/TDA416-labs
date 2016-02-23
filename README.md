@@ -1,2 +1,3 @@
 # TDA416
-TDA416 - Data structures and algorithms
+
+Labs for the course TDA416 - Data structures and algorithms at Chalmers.
