@@ -5,7 +5,7 @@ public class DirectedGraph<E extends Edge> {
 	private List<E>[] nodes;
 
 	public DirectedGraph(int noOfNodes) {
-		nodes = new List[noOfNodes];
+		nodes = (List<E>[]) new List[noOfNodes];
 		for (int i = 0; i < noOfNodes; i++) {
 			nodes[i] = new LinkedList<>();
 		}
