@@ -141,10 +141,4 @@ public class DirectedGraph<E extends Edge> {
 			return Double.compare(e1.getWeight(), e2.getWeight());
 		}
 	}
-
-	private class UndirectedEdge {
-		private Edge edge;
-
-
-	}
 }
