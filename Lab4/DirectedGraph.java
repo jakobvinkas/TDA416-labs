@@ -115,6 +115,9 @@ public class DirectedGraph<E extends Edge> {
 	}
 
 	private void merge(Set<E>[] trees, int from, int to) {
+		// Merge by copying all the edges from the smaller tree to the larger
+		// tree, and change the pointer of the smaller tree. Also change the
+		// pointer for all the nodes in the smaller tree.
 		if (trees[from].size() < trees[to].size()) {
 			for (E edge : trees[from]) {
 				trees[to].add(edge);
