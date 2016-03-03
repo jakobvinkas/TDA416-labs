@@ -15,10 +15,12 @@ public class DirectedGraph<E extends Edge> {
 			this.path = path;
 		}
 
+		@Override
 		public int compareTo(DijkstraNode node) {
 			return Double.compare(this.distance, node.distance);
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			if (this == o) {
 				return true;
@@ -73,6 +75,48 @@ public class DirectedGraph<E extends Edge> {
 	}
 
 	public Iterator<E> minimumSpanningTree() {
-		return null;
+		Set<E>[] trees = (Set<E>[]) new Set[this.nodes.length];
+		for (int i = 0; i < this.nodes.length; i++) {
+			trees[i] = new HashSet<>();
+		}
+
+		Queue<E> queue = new PriorityQueue<>(this.nodes.length, new EdgeComparator());
+
+		for (List<E> edges : this.nodes) {
+			queue.addAll(edges);
+		}
+
+		while (!queue.isEmpty() && trees[0].size() < this.nodes.length - 1) {
+			E edge = queue.remove();
+			if (trees[edge.from] != trees[edge.to]) {
+				merge(trees, edge.from, edge.to);
+			}
+			trees[edge.from].add(edge);
+		}
+
+		return trees[0].iterator();
+	}
+
+	private void merge(Set<E>[] trees, int from, int to) {
+		if (trees[from].size() < trees[to].size()) {
+			for (E edge : trees[from]) {
+				trees[to].add(edge);
+				trees[edge.from] = trees[to];
+				trees[edge.to] = trees[to];
+			}
+		} else {
+			for (E edge : trees[to]) {
+				trees[from].add(edge);
+				trees[edge.from] = trees[from];
+				trees[edge.to] = trees[from];
+			}
+		}
+	}
+
+	private class EdgeComparator implements Comparator<E> {
+		@Override
+		public int compare(E e1, E e2) {
+			return Double.compare(e1.getWeight(), e2.getWeight());
+		}
 	}
 }
