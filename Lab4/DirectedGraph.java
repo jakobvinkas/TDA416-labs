@@ -2,6 +2,7 @@
 import java.util.*;
 
 public class DirectedGraph<E extends Edge> {
+	private int numberOfNodes;
 	private List<E>[] nodes;
 
 	private class DijkstraNode implements Comparable<DijkstraNode> {
@@ -32,9 +33,10 @@ public class DirectedGraph<E extends Edge> {
 		}
 	}
 
-	public DirectedGraph(int noOfNodes) {
-		nodes = (List<E>[]) new List[noOfNodes];
-		for (int i = 0; i < noOfNodes; i++) {
+	public DirectedGraph(int numberOfNodes) {
+		this.numberOfNodes = numberOfNodes;
+		nodes = (List<E>[]) new List[numberOfNodes];
+		for (int i = 0; i < numberOfNodes; i++) {
 			nodes[i] = new LinkedList<>();
 		}
 	}
@@ -75,23 +77,38 @@ public class DirectedGraph<E extends Edge> {
 	}
 
 	public Iterator<E> minimumSpanningTree() {
-		Set<E>[] trees = (Set<E>[]) new Set[this.nodes.length];
-		for (int i = 0; i < this.nodes.length; i++) {
+		// Set up an array of spanning trees. In the beginning each element in
+		// the array represents one node.
+		Set<E>[] trees = (Set<E>[]) new Set[this.numberOfNodes];
+		for (int i = 0; i < trees.length; i++) {
 			trees[i] = new HashSet<>();
 		}
 
-		Queue<E> queue = new PriorityQueue<>(this.nodes.length, new EdgeComparator());
-
+		// Add all edges in the graph to a priority queue.
+		Queue<E> queue = new PriorityQueue<>(this.numberOfNodes, new EdgeComparator());
 		for (List<E> edges : this.nodes) {
 			queue.addAll(edges);
 		}
 
-		while (!queue.isEmpty() && trees[0].size() < this.nodes.length - 1) {
+		// Loop through all edges in the graph, or until all nodes are in the
+		// spanning tree.
+		while (!queue.isEmpty() && trees[0].size() < this.numberOfNodes - 1) {
+			// Remove the edge with the least weight from the queue
 			E edge = queue.remove();
-			if (trees[edge.from] != trees[edge.to]) {
-				merge(trees, edge.from, edge.to);
+
+			int from = edge.from;
+			int to = edge.to;
+
+			// If the nodes that the edge connects aren't in the same tree
+			// we connect them.
+			if (trees[from] != trees[to]) {
+				merge(trees, from, to);
+
+				// Add the removed edge to the tree. From and to are now in the same
+				// tree, so adding the edge to the from-tree will also add it to the
+				// to-tree.
+				trees[from].add(edge);
 			}
-			trees[edge.from].add(edge);
 		}
 
 		return trees[0].iterator();
@@ -104,12 +121,14 @@ public class DirectedGraph<E extends Edge> {
 				trees[edge.from] = trees[to];
 				trees[edge.to] = trees[to];
 			}
+			trees[from] = trees[to];
 		} else {
 			for (E edge : trees[to]) {
 				trees[from].add(edge);
 				trees[edge.from] = trees[from];
 				trees[edge.to] = trees[from];
 			}
+			trees[to] = trees[from];
 		}
 	}
 
@@ -118,5 +137,11 @@ public class DirectedGraph<E extends Edge> {
 		public int compare(E e1, E e2) {
 			return Double.compare(e1.getWeight(), e2.getWeight());
 		}
+	}
+
+	private class UndirectedEdge {
+		private Edge edge;
+
+
 	}
 }
